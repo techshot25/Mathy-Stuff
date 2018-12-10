@@ -1,0 +1,108 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portrait, margin=1in]{geometry}
+\usepackage{cancel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\begin{document}
+
+\section{Introduction and simplification.}
+
+This is the story of an infinite product integral that seems intimidating at first but is actually easier than it looks. Let's take a look:
+
+\begin{equation}
+    \int{ \frac{1}{x} \prod_{n=1}^{\infty} \left( 1-\tan^2{\frac{x}{2^n}} \right) dx}
+\end{equation}
+
+Recall some trig identities:
+
+\begin{center}
+    $1-\tan^2{(a)}=2-\sec^2{(a)}=\left(2\cos^2{(a)}-1\right)\sec^2{(a)}= \cos{(2a)}\sec^2{(a)}$
+\end{center}
+
+This simplifies our integral to:
+
+\begin{equation}
+\rightarrow \int{ \frac{1}{x} \prod_{n=1}^{\infty} \left( \cos{\left( \frac{x}{2^{n-1}}\right)} \sec^2{\left( \frac{x}{2^n} \right)}  \right) dx}
+\end{equation}
+
+Use this property of products: $\prod_{n}{a_{n}^k}=\left [ \: \prod_n{a_n} \: \right]^k$ to get:
+
+\begin{equation}
+    \rightarrow \int{ \frac{1}{x} \prod_{n=1}^{\infty}  \cos{\left( \frac{x}{2^{n-1}}\right)} \left[ \prod_{n=1}^{\infty}\sec{\left( \frac{x}{2^n} \right)}  \right]^2  dx}
+\end{equation}
+
+\section{Finding a way to simplify the infinite product.}
+We seek to find the convergence of $\cos{ \left( \frac{x}{2^{n-1}} \right) }$ with respect to n:
+
+\begin{equation}
+    \lim_{k\rightarrow \infty} {\prod_{n=1}^{k}} \cos{\left( \frac{x}{2^{n-1}}\right)}=\cos{\left(x\right)}\lim_{k\rightarrow \infty} \prod_{n=1}^{k} \cos{\left( \frac{x}{2^n}\right)}
+\end{equation}
+
+
+Now we need to recall this simple trig identity:
+
+\begin{center}
+        $ \sin{(2a)}=2\sin{(a)}\cos{(a)}\rightarrow \cos{(a)}=\frac{\sin{(2a)}}{2\sin{(a)}}$
+\end{center}
+
+
+Redefine the limit to get:
+
+\begin{equation}
+    \Rightarrow\cos{\left(x\right)}\lim_{k\rightarrow \infty} \left [ \frac{\sin{\left(x\right)}}{2\sin\left(\frac{x}{2}\right)} \cdot  \frac{\sin{\left(\frac{x}{2}\right)}}{2\sin\left(\frac{x}{2^2}\right)} \cdot \frac{\sin{\left(\frac{x}{2^2}\right)}}{2\sin\left(\frac{x}{2^3}\right)} \; ... \; \frac{\sin{\left(\frac{x}{2^{k-1}}\right)}}{2\sin\left(\frac{x}{2^k}\right)} \right]
+\end{equation}
+
+Now this is interesting, because we are looking at a telescoping series of product:
+
+\begin{equation}
+    \Rightarrow\cos{\left(x\right)}\lim_{k\rightarrow \infty} \left [ \frac{\sin{\left(x\right)}}{2\; \cancel{\sin\left(\frac{x}{2}\right)}} \cdot  \frac{\cancel{\sin{\left(\frac{x}{2}\right)}}}{2\;\cancel{\sin\left(\frac{x}{2^2}\right)}} \cdot \frac{\cancel{\sin{\left(\frac{x}{2^2}\right)}}}{2\; \cancel{\sin\left(\frac{x}{2^3}\right)}} \; ... \; \frac{\cancel{\sin{\left(\frac{x}{2^{k-1}}\right)}}}{2\sin\left(\frac{x}{2^k}\right)} \right]
+\end{equation}
+
+So our product series ends with this:
+\begin{equation}
+    \Rightarrow\cos{\left(x\right)}\lim_{k\rightarrow \infty} \frac{\sin{(x)}}{2^k\sin{\frac{x}{2^k}}}
+\end{equation}
+
+Using L'Hospital's rule to evaluate the limit:
+
+\label{s}
+\begin{equation}
+    \Rightarrow\cos{(x)}\sin{(x)}\lim_{k\rightarrow \infty} \frac{\frac{d}{dk}2^{-k}}{\frac{d}{dk}\sin{\frac{x}{2^k}}}=\cos{(x)}\sin{(x)}\lim_{k\rightarrow \infty} \frac{\cancel{-2^{-k}\ln{(2)}}}{\cancel{(-2^{-k}\ln{2})}x \cos{\frac{x}{2^k}}}=\boxed{\frac{\cos{(x)}\sin{(x)}}{x}}
+\end{equation}
+
+\newpage
+
+\section{The final stretch.}
+
+Recall our integral from before:
+
+\begin{equation}
+    \int{ \frac{1}{x} \prod_{n=1}^{\infty}  \cos{\left( \frac{x}{2^{n-1}}\right)} \left[ \prod_{n=1}^{\infty}\sec{\left( \frac{x}{2^n} \right)}  \right]^2  dx}
+\end{equation}
+
+Use the substitutions from before:
+\begin{center}
+        $ \prod_{n=1}^{\infty}  \cos{\left( \frac{x}{2^{n-1}}\right)} = \frac{\sin{(x)}\cos{(x)}}{x}$
+\end{center}
+
+And similarly:
+
+\begin{center}
+    $\left[ \prod_{n=1}^{\infty}\sec{\left( \frac{x}{2^n} \right)}  \right]^2 = \frac{x^2}{\sin^2{(x)}} $
+\end{center}
+
+Now it can be rewritten as:
+
+\begin{equation}
+        \int \frac{1}{\cancel{x}} \left[ \frac{\cos{(x)}\;\cancel{\sin{(x)}}}{\cancel{x}}\cdot\frac{\cancel{x^{2}}}{\sin^{\cancel{2}}{x}} \right] dx
+        =\int{\cot{(x)}}\;dx = \ln{\left| \sin{x}\right|} + \textsc{c}
+\end{equation}
+\newline
+
+Plot for $c = 0$:
+
+\begin{center}
+    \includegraphics{boi.jpg}
+\end{center}
+\end{document}
